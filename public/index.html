@@ -12,7 +12,7 @@
 
 <div id="root"></div>
 
-<script>
+<script type="text/own">
 
 // ##########################
 
@@ -96,7 +96,7 @@ function Clock ({ time }) {
   const isDay = time.getHours() >= 7 && time.getHours() <= 21
 
   return React.createElement(
-    'div', 
+    'div',
     { className: 'clock' },
     React.createElement('span', { className: 'value' }, time.toLocaleTimeString()),
     React.createElement('span', { className: isDay ? 'icon day' : 'icon night' }),
@@ -181,6 +181,23 @@ api.get('/lots').then((lots) => {
 
 // ##########################
 
+</script>
+
+<script>
+  function convertToNativeJs(code) {
+
+    return code
+  }
+
+  const scripts = document.querySelectorAll('script[type="text/own"]')
+
+  scripts.forEach(el => {
+    const js = convertToNativeJs(el.text)
+    const script = document.createElement('script')
+    script.text = js
+
+    document.querySelector('body').append(script)
+  })
 </script>
 
 </body>

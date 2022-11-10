@@ -78,7 +78,7 @@ class Store {
   changeState (differance) {
     this.state = {
       ...this.state,
-      ...differance,
+      ...(typeof differance === 'function' ? differance(this.state) : differance),
     }
   }
 }
@@ -190,6 +190,21 @@ api.get('/lots').then((lots) => {
         return lot
       })
     })
+
+    store.changeState((state) => ({
+      
+      lots: state.lots.map((lot) => {
+
+        if (lot.id === data.id) {
+          return {
+            ...lot,
+            price: data.price,
+          }
+        }
+
+        return lot
+      })
+    }))
 
     renderView(store.getState())
   }

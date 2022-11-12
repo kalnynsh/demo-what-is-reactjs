@@ -78,6 +78,11 @@ class Store {
 
   subscribe (callback) {
     this.listeners.push(callback)
+
+    return () => {
+      const index = this.listeners.indexOf(callback)
+      this.listeners.splice(index, 1)
+    }
   }
 
   changeState (differance) {

@@ -184,22 +184,6 @@ api.get('/lots').then((lots) => {
   })
 
   const onPrice = (data) => {
-    store.changeState({
-      lots: store.getState().lots.map((lot) => {
-
-        if (lot.id === data.id) {
-
-          return {
-            ...lot,
-            price: data.price
-          }
-
-        }
-
-        return lot
-      })
-    })
-
     store.changeState((state) => ({
 
       lots: state.lots.map((lot) => {

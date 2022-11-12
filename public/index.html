@@ -85,15 +85,9 @@ class Store {
     }
   }
 
-  changeState (differance) {
-    this.state = {
-      ...this.state,
-      ...(typeof differance === 'function' ? differance(this.state) : differance),
-    }
-
-    this.listeners.forEach((listener) => {
-      listener()
-    })
+  setState (state) {
+    this.state = (typeof state === 'function' ? state(this.state) : state)
+    this.listeners.forEach((listener) => listener())
   }
 }
 
@@ -178,18 +172,21 @@ renderView(store.getState())
 // ##########################
 
 setInterval(() => {
-  store.changeState({
+  store.setState((state) => ({
+    ...state,
     time: new Date()
-  })
+  }))
 }, 1000)
 
 api.get('/lots').then((lots) => {
-  store.changeState({
+  store.setState((state) => ({
+    ...state,
     lots,
-  })
+  }))
 
   const onPrice = (data) => {
-    store.changeState((state) => ({
+    store.setState((state) => ({
+      ...state,
 
       lots: state.lots.map((lot) => {
 

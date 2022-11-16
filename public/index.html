@@ -105,6 +105,28 @@ function appReducer (state = initialState, action) {
   }
 }
 
+function setTime (time) {
+  return {
+    type: SET_TIME,
+    time
+  }
+}
+
+function setLots (lots) {
+  return {
+    type: SET_LOTS,
+    lots
+  }
+}
+
+function changeLotPrice (id, price) {
+  return {
+    type: CHANGE_LOT_PRICE,
+    id,
+    price
+  }
+}
+
 // ##########################
 
 class Store {
@@ -214,24 +236,14 @@ renderView(store.getState())
 // ##########################
 
 setInterval(() => {
-  store.dispatch ({
-    type: SET_TIME,
-    time: new Date()
-  })
+  store.dispatch(setTime(new Date()))
 }, 4000)
 
 api.get('/lots').then((lots) => {
-  store.dispatch({
-    type: SET_LOTS,
-    lots
-  })
+  store.dispatch(setLots(lots))
 
   const onPrice = (data) => {
-    store.dispatch({
-      type: CHANGE_LOT_PRICE,
-      id: data.id,
-      price: data.price
-    })
+    store.dispatch(changeLotPrice(data.id, data.price))
   }
 
   lots.forEach((lot) => {

@@ -9,7 +9,7 @@ body {
 }
 
 .app {
-  max-width: 500px;
+  max-width: 300px;
   margin-top: 1%;
   margin-left: 2%;
 }
@@ -58,17 +58,10 @@ body {
   border: 1px solid #ddd;
   border-radius: 6px;
   margin-bottom: 10px;
-}
-
-.lot .price {
-  float: right;
-  text-align: right;
-  font-size: 1.2rem;
-}
-
-.lot.favorite {
-  border-color: #ef7b00;
-  background-color: rgba(202, 89, 18, 0.496);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .lot h2 {
@@ -78,6 +71,29 @@ body {
 
 .lot p {
   margin: 0 0 15px 0;
+}
+
+.lot .price {
+  align-self: flex-end;
+  margin-right: 4px;
+  font-size: 1.4rem;
+}
+
+.lot.favorite {
+  border-color: #ef7b00;
+  background-color: rgba(205, 137, 95, 0.261);
+}
+
+button {
+  cursor: pointer;
+  background-color: rgba(218, 131, 78, 0.689);
+  border: 1px solid #9d9fa2;
+  color: #000;
+  border-radius: 4px;
+  padding: 8px 6px;
+  font-size: 0.8rem;
+  outline: none;
+  align-self: flex-end;
 }
 
 .loading {

@@ -66,13 +66,18 @@ body {
   font-size: 1.2rem;
 }
 
+.lot.favorite {
+  border-color: #ef7b00;
+  background-color: rgba(202, 89, 18, 0.496);
+}
+
 .lot h2 {
   margin: 0 0 15px 0;
   line-height: 1;
 }
 
 .lot p {
-  margin: 0;
+  margin: 0 0 15px 0;
 }
 
 .loading {

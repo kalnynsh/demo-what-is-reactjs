@@ -26,9 +26,13 @@ body {
 
 .clock {
   padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
   margin-bottom: 10px;
+  border: 1px solid rgb(211, 209, 209);
+  border-radius: 6px;
+  background-color: rgb(233, 231, 231);
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
 }
 
 .clock .value {
@@ -80,7 +84,7 @@ body {
 }
 
 .lot.favorite {
-  border-color: #ef7b00;
+  border-color: #eaa760;
   background-color: rgba(205, 137, 95, 0.261);
 }
 
@@ -94,6 +98,22 @@ button {
   font-size: 0.8rem;
   outline: none;
   align-self: flex-end;
+}
+
+button * {
+  vertical-align: middle;
+}
+
+button.favorite {
+  background-color: #eee;
+  border: 1px solid #ff8c68;
+  color: #dc0000;
+}
+
+button.unfavorite {
+  background-color: #eee;
+  border: 1px solid #999;
+  color: rgb(18, 18, 18);
 }
 
 .loading {

@@ -55,14 +55,14 @@ const api = {
     }
   },
   post (url) {
-    if (/^\/lots\/(\d+)\/favorite$/,exec(url)) {
+    if (/^\/lots\/(\d+)\/favorite$/.exec(url)) {
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve({})
         }, 500)
       })
     }
-    if (/^\/lots\/(\d+)\/unfavorite$/,exec(url)) {
+    if (/^\/lots\/(\d+)\/unfavorite$/.exec(url)) {
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve({})
@@ -217,12 +217,12 @@ const store = Redux.createStore(Redux.combineReducers({
 
 // ##########################
 
-function App ({ state }) {
+function App ({ state, favorite, unfavorite }) {
   return (
     <div className="app">
       <Header />
       <Clock time={state.clock.time} />
-      <Lots lots={state.auction.lots} />
+      <Lots lots={state.auction.lots} favorite={favorite} unfavorite={unfavorite} />
     </div>
   )
 }
@@ -254,46 +254,50 @@ function Loading () {
   return <div className="loading">Loading...</div>
 }
 
-function Lots ({ lots }) {
+function Lots ({ lots, favorite, unfavorite }) {
   if (lots === null) {
     return <Loading />
   }
 
   return (
     <div className="lots">
-      {lots.map((lot) => <Lot lot={lot} key={lot.id} />)}
+      {lots.map((lot) => <Lot lot={lot} favorite={favorite} unfavorite={unfavorite} key={lot.id} />)}
     </div>
   )
 }
 
-function Lot ({ lot }) {
+function Lot ({ lot, favorite, unfavorite }) {
   return (
     <article className={'lot' + (lot.favorite ? ' favorite' : '')}>
       <div className="price">{lot.price}</div>
       <h2>{lot.name}</h2>
       <p>{lot.description}</p>
-      <Favorite active={lot.favorite} />
+      <Favorite
+        active={lot.favorite}
+        favorite={() => favorite(lot.id)}
+        unfavorite={() => unfavorite(lot.id)}
+      />
     </article>
   )
 }
 
-function Favorite ({ active }) {
+function Favorite ({ active, favorite, unfavorite }) {
   return active
-    ? (<button type="button" className="unfavorite">
+    ? (<button type="button" className="unfavorite" onClick={unfavorite}>
         <ion-icon name="heart-sharp" />Unfavorite
       </button>)
-    : (<button type="button" className="favorite">
+    : (<button type="button" className="favorite" onClick={favorite}>
       <ion-icon name="heart-outline" />Favorite
       </button>)
 }
 
-const favorite = (id) {
+const favorite = (id) => {
   api.post(`/lots/${id}/favorite`).then(() => {
     store.dispatch(favoriteLot(id))
   })
 }
 
-const unfavorite = (id) {
+const unfavorite = (id) => {
   api.post(`/lots/${id}/unfavorite`).then(() => {
     store.dispatch(unfavoriteLot(id))
   })
@@ -303,7 +307,7 @@ const unfavorite = (id) {
 
 function renderView (state) {
   ReactDOM.render(
-    <App state={state} />,
+    <App state={state} favorite={favorite} unfavorite={unfavorite} />,
     document.getElementById('root')
   )
 }

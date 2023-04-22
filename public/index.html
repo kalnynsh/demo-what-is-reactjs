@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/redux@4/dist/redux.js" crossorigin></script>
   <script src="https://unpkg.com/react-redux@7/dist/react-redux.js" crossorigin></script>
+  <script src="https://unpkg.com/redux-thunk@2/dist/redux-thunk.js" crossorigin></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.js" crossorigin></script>
   <script src="https://unpkg.com/ionicons@5/dist/ionicons/ionicons.esm.js" type="module" crossorigin></script>
 </head>
@@ -189,7 +190,7 @@ function setLots (lots) {
 
 function favoriteLotAsync (id) {
 
-  return (dispatch) => {
+  return (dispatch, getState, { api }) => {
 
     return api.post(`/lots/${id}/favorite`).then(() => {
       dispatch(favoriteLot(id))
@@ -213,7 +214,7 @@ function unfavoriteLot (id) {
 
 function unfavoriteLotAsync (id) {
 
-  return (dispatch) => {
+  return (dispatch, getState, { api }) => {
 
     return api.post(`/lots/${id}/unfavorite`).then(() => {
       dispatch(unfavoriteLot(id))
@@ -231,27 +232,14 @@ function changeLotPrice (id, price) {
 
 // ##########################
 
-function functionalActionSupport ({ dispatch, getState }) {
-
-  return function (next) {
-
-    return function (action) {
-
-      if (typeof action === 'function') {
-        return action(dispatch, getState)
-      }
-
-      return next(action)
-    }
-  }
-}
+const thunk = ReduxThunk
 
 const store = Redux.createStore(
   Redux.combineReducers({
     clock: clockReducer,
     auction: auctionReducer
   }),
-  Redux.applyMiddleware(functionalActionSupport)
+  Redux.applyMiddleware(thunk.withExtraArgument({ api }))
 )
 
 // ##########################
